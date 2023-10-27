@@ -61,7 +61,7 @@ responsive>
 <th>Price</th>
 <th>Image</th>
 <th>Date Created</th>
-<td>Action</td> 
+<th>Action</th> 
 </tr>
 </thead>
 <tfoot>
@@ -71,7 +71,7 @@ responsive>
 <th>Price</th>
 <th>Image</th>
 <th>Date Created</th>
-<td>Action</td> 
+<th>Action</th> 
 </tr>
 </tfoot>
 <tbody> 

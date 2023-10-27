@@ -156,9 +156,13 @@ async function adminOrders(req,res) {
                 attributes:["quantity"],
                 include: [ {
                     model: Product,
-                    attributes:["name"]
+                    attributes:["name","price", "image"]
                 },],
-            }],
+            },
+                {
+                    model: User,
+                attributes:["name"]},
+            ],
         })
         return res.status(200).json({
             orders
@@ -166,7 +170,46 @@ async function adminOrders(req,res) {
         
     } catch (error) {
         return res.status(500).json({
-            message:"Failed to fetch orders"
+            message: "Failed to fetch orders"
+        })
+    }
+}
+async function adminOrderDetail(req, res) {
+    try {
+        // const id = req.body.orderId;
+        let id = req.params.id;        
+        const order = await Order.findOne({
+            where: {
+                tracking_no:id,
+            },
+            include: [
+                
+                {
+                    model: OrderItems,
+                    attributes:["quantity"],
+                    include: [{
+                        model: Product,
+                        attributes:["name", "image", "price" ],
+                    }],                    
+                },
+                {
+                    model: User,
+                    attributes:["name"],
+                },
+                
+            ],
+        })
+        if (!order) {
+            return res.status(404).json({
+                message:"Order Not Found"
+             }) 
+        }
+        return res.status(200).json({
+           order
+        })
+    } catch (error) {    
+        return res.status(500).json({
+            message:"Failed to fetch order"
         })
     }
 }
@@ -175,4 +218,5 @@ module.exports = {
     userOrders,
     getOrder,
     adminOrders, 
+    adminOrderDetail,
 }

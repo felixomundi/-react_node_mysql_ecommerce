@@ -58,28 +58,28 @@ function OrderDetail() {
 
             <div className="d-flex justify-content-between pt-2">
               <p className="fw-bold mb-0">Order Details</p>
-                  <p className="text-muted mb-0"><span className="fw-bold me-4">Total</span> Ksh. {order.total }</p>
+                  <p className="text-muted mb-0"><span className="fw-bold me-4">Total</span> Ksh. {order?.total }</p>
             </div>
                
             <div className="d-flex justify-content-between pt-2">
-              <p className="text-muted mb-0">Invoice Number : 788152</p>
-                  <p className="text-muted mb-0"><span className="fw-bold me-4">Discount</span> Ksh. {order.discount }</p>
+                  <p className="text-muted mb-0">Address : {order?.address }</p>
+                  <p className="text-muted mb-0"><span className="fw-bold me-4">Discount</span> Ksh. {order?.discount }</p>
             </div>
 
             <div className="d-flex justify-content-between">
-              <p className="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+              <p className="text-muted mb-0">ShipCode : {order.shipcode}</p>
               <p className="text-muted mb-0"><span className="fw-bold me-4">VAT</span> Ksh. 0.00</p>
             </div>
 
             <div className="d-flex justify-content-between mb-5">
-              <p className="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
+                  <p className="text-muted mb-0">Order Date : { new Date(order?.createdAt).toLocaleString('en-US')}</p>
               <p className="text-muted mb-0"><span className="fw-bold me-4">Delivery Charges</span> Free</p>
             </div>
           </div>
           <div className="card-footer border-0 px-4 py-5"
             style={{backgroundColor: "#a8729a", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px"}}>
             <h5 className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
-                  paid: <span className="h2 mb-0 ms-2">Ksh. {order.discounted_total }</span></h5>
+                  paid: <span className="h2 mb-0 ms-2">Ksh. {order?.discounted_total }</span></h5>
           </div>
         </div>
       </div>

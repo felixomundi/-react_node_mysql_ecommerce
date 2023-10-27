@@ -29,6 +29,8 @@ import CreateCoupon from "./admin/coupons/Create";
 import Order from "./pages/order/Order"
 import OrderDetail from './pages/order/OrderDetail'
 import NotFoundPage from "./pages/NotFoundPage.js";
+import SystemOrders from './admin/orders/SystemOrders'
+import SystemOrderDetail from './admin/orders/SystemOrderDetail'
 function App() { 
   const dispatch = useDispatch();  
   const  user  = useSelector((state) => state.auth.user);
@@ -66,6 +68,8 @@ function App() {
             <Route path='/admin/cartItems' element={<CartItems />} />
             <Route path='/admin/coupons' element={<Coupons />} />
             <Route path='/admin/coupons/create' element={<CreateCoupon />} />
+            <Route path='/admin/orders' element={<SystemOrders />} />
+            <Route path='/admin/orders/:id' element={ <SystemOrderDetail/>} />
             <Route path="*" element={<NotFoundPage/>} />
           </Routes>
           <Subscribe/>

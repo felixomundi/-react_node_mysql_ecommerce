@@ -1,15 +1,13 @@
 const axios = require("axios");
-const db = require("../models");
-const Payment = db.payments;
 require("dotenv").config();
 const ngrok = require("ngrok");
-(async function(){
+async function ngrokConnect(){
     var url = await ngrok.connect({
-    proto: 'http', // http|tcp|tls, defaults to http
-  addr: 5000,
+    proto: 'http', 
+    addr: 5000,
    });
     console.log("url", url)
-})();
+} ngrokConnect();
   
 // console.log("first",url)
 
@@ -84,7 +82,7 @@ const stkPush = async (req, res) => {
 
 const callBack = async(req, res) => {    
     try {
-        const callBackData = req.body.Body;
+        const callBackData = req.body.Body.stkCallback;
         console.log(callBackData);       
             // const data = callBackData.Body.stkCallback.CallbackMetadata;           
             // const amount = data.Item[0].Value;

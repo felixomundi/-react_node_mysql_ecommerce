@@ -73,7 +73,7 @@ const onLogout = async() => {
                                                     )}
                                                      {user && user.role === "admin" && (
                                                         <>
-                                <li><Link className="dropdown-item" to="#"><i className="fa fa-list"></i>Orders</Link></li>
+                                <li><Link className="dropdown-item" to="/admin/orders"><i className="fa fa-list"></i>Orders</Link></li>
                                 <li><Link className="dropdown-item" to="#"><i className="fa fa-heart"></i>Wishlist</Link></li>
                                 <li><Link className="dropdown-item" to="/admin/cartItems"><i className="fa fa-shopping-cart"></i>Cart</Link></li>
                                 <li><Link className="dropdown-item" to="/products"><i className="fa fa-list"></i>Products</Link></li>
