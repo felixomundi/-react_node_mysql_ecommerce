@@ -1,0 +1,98 @@
+
+  .products{
+    margin-top: 20px;
+  }
+  .products .prod .card:hover{
+    border: 1px solid #088178;
+  }
+
+  @media only screen and (min-width:768px) {
+    .products img.img-fluid{
+      width: 174px;
+      height: 94px;
+    } 
+  }
+  
+  .products h1{
+  font-size:30px;
+  font-weight: 800;
+  color: #088178;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  }
+  
+  .col-md-2.gap-4.prod{
+  transition: 0.3s ease;
+  }
+  
+  .products .col-md-2.gap-4.prod h4{
+  cursor: pointer;
+  text-decoration: none;
+  }
+
+  .products .col-md-2.gap-4.prod h4>a{
+    text-decoration: none;
+    color: #088178;
+  }
+  .col-md-2 h4{
+  margin-bottom: 15px;
+  }
+  .col-md-2.prod p{
+    margin-top: -10px;
+    font-size: 30px;
+    font-weight: 700;
+  }
+  
+  .col-md-2.prod button{
+    background: transparent;
+    border: none;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+  
+  .col-md-2.prod button:hover{
+    border: 1px solid #088178;
+  }
+  
+  .col-md-2.prod button>img{
+  width: 30px;
+  height: 30px;
+  }
+  .banner{
+    width: 100%;
+    background-color: black;
+    margin-top: 20px;
+    height: 250px;
+    transition: 0.3s ease;
+  
+  }
+  .banner h2{
+    color: beige;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  .banner p{
+    color: beige;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .banner span{
+    color: red;
+    font-weight: 400;
+  }
+  .banner button{
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    padding: 5px;
+    font-size: 20px;
+    margin-top: 0;
+  }
+  .banner button:hover{
+    background-color: #088178;
+    color: #ffff;
+  
+  }
