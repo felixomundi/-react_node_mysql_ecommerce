@@ -1,7 +1,7 @@
 {
     "name": "frontend",
     "version": "0.1.0",
-    "private": true,   
+    "private": true,
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.4.2",
         "@fortawesome/free-solid-svg-icons": "^6.4.2",
@@ -12,7 +12,7 @@
         "@testing-library/user-event": "^7.2.1",
         "axios": "^0.25.0",
         "bootstrap": "^5.2.2",
-        "formik": "^2.4.4",
+        "formik": "^2.4.5",
         "jquery": "^3.7.1",
         "mdb-react-ui-kit": "^2.3.0",
         "popper.js": "^1.16.1",

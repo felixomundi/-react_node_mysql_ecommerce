@@ -1,3 +1,5 @@
+"use strict"
+
 const SubscriberService = require("../services/Subscribers")
 
 async function newSubscribe(req, res) {
@@ -23,7 +25,7 @@ async function newSubscribe(req, res) {
                 message:'Please Enter a valid email address.'
             })
             }
-        const subscriber = await SubscriberService.findById(email);
+        const subscriber = await SubscriberService.findByEmail(email);
         if (subscriber) {
             return res.status(400).json({
                 message: "Subscriber Exists"
@@ -57,20 +59,7 @@ async function getSubscribers(req, res) {
         })
     }
 }
-
-async function getSubscribers(req, res) { 
-    try {
-        const subscribers = await SubscriberService.findAll();
-        return res.status(200).json({
-            subscribers
-        })
-    } catch (error) {
-        return res.status(500).json({
-            message:"Failed to fetch subscribers"
-        })
-    }
-}
-    
+ 
 async function deleteSubscriber(req, res) { 
     try {
         const email = req.body.email;
@@ -89,7 +78,7 @@ async function deleteSubscriber(req, res) {
                 message:'Please Enter a valid email address.'
             })
             }
-        const subscriber = await SubscriberService.findById(email);
+        const subscriber = await SubscriberService.findByEmail(email);
         if(!subscriber){
             return res.status(200).json({
                message:"Subscriber Not Found"
@@ -105,10 +94,57 @@ async function deleteSubscriber(req, res) {
             message:"Failed to delete subscriber"
         })
     }
+}
+
+async function unSubscribe(req, res) {
+    try {
+        const email = req.body.email;
+        if (!email) {
+            return res.status(400).json({
+                message:"Subscriber Email is required"
+            })
+        }
+        const validateEmail = (email) => {
+            return email.match(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        if (!validateEmail(email)) {
+            return res.status(400).json({
+                message:'Please Enter a valid email address.'
+            })
+            }
+        const subscriber = await SubscriberService.findByEmail(email);
+        if (!subscriber) {
+            return res.status(400).json({
+                message:"Subscriber not found"
+            })  
+        }
+        if (subscriber.status === "Inactive") {
+            return res.status(200).json({
+                message:"You are not subscribed to our newsletter"
+            })    
+        }
+
+        await subscriber.update({
+            status:"Inactive"
+        })
+
+        return res.status(200).json({
+            message:"UnSubscribed successfully"
+        })  
+
+    } catch (error) {
+        return res.status(500).json({
+            message:"Something went wrong"
+        })  
     }
+    
+}
 
 module.exports = {
     newSubscribe,
     getSubscribers,
     deleteSubscriber,
+    unSubscribe,
 }

@@ -2,7 +2,7 @@ const {Subscribers} = require("../models")
 class SubscriberService {
 
 
-    static  async findById(email) {
+    static  async findByEmail(email) {
      return   await Subscribers.findOne({
             where: {
              email

@@ -4,7 +4,8 @@ import cartReducer from '../features/cart/cartSlice'
 import productReducer from '../features/products/productSlice'
 import contactReducer from '../features/contact/contactSlice'
 import couponReducer from '../features/coupons/couponSlice'
-import  orderReducer  from '../features/orders/order'
+import orderReducer from '../features/orders/order'
+import subscribeReducer from '../features/subscribe/subscribe'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -12,7 +13,8 @@ export const store = configureStore({
     products: productReducer,
     contact: contactReducer,
     coupon: couponReducer,
-    order:orderReducer,
+    order: orderReducer,
+    subscriber:subscribeReducer
     
   
   },
