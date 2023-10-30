@@ -1,7 +1,7 @@
 "use strict"
 
 const SubscriberService = require("../services/Subscribers")
-
+const {User} = require("../models")
 async function newSubscribe(req, res) {
     try {
         const { name, email } = req.body;
@@ -77,6 +77,29 @@ async function deleteSubscriber(req, res) {
             return res.status(400).json({
                 message:'Please Enter a valid email address.'
             })
+        }
+
+        const user = await User.findOne({
+            where:{id:req.user.id}
+        })
+        if (user.role === "admin") {
+        const subscriber = await SubscriberService.findByEmail(email);
+        if(!subscriber){
+            return res.status(200).json({
+               message:"Subscriber Not Found"
+            })
+        }
+        await subscriber.destroy();
+        return res.status(200).json({
+            message:"Subscriber deleted"
+         })
+        }
+
+        else if (user.role === "user") {
+            if (user.email !== email) {
+                return res.status(400).json({
+                   message:"You are not subscribed"
+               }) 
             }
         const subscriber = await SubscriberService.findByEmail(email);
         if(!subscriber){
@@ -88,6 +111,7 @@ async function deleteSubscriber(req, res) {
         return res.status(200).json({
             message:"Subscriber deleted"
          })
+        }      
         
     } catch (error) {
         return res.status(500).json({
@@ -121,8 +145,11 @@ async function unSubscribe(req, res) {
             })  
         }
         if (subscriber.status === "Inactive") {
+            await subscriber.update({
+                status:"Active"
+            })
             return res.status(200).json({
-                message:"You are not subscribed to our newsletter"
+                message:"You hare  subscribed to our newsletter"
             })    
         }
 
@@ -131,7 +158,8 @@ async function unSubscribe(req, res) {
         })
 
         return res.status(200).json({
-            message:"UnSubscribed successfully"
+            message: "UnSubscribed successfully",
+            subscriber
         })  
 
     } catch (error) {

@@ -17,7 +17,7 @@ export const newSubscribe = createAsyncThunk("subscribers/create", async (data, 
             },
           }      
         const url = `${BASE_URL}create`;
-        const response = await axios.post(url,  data,config );
+        const response = await axios.post(url,  data, config );
         if (response.status === 200) {
             toast.success(response.data.message);
         }
@@ -62,6 +62,71 @@ export const getSubscribers = createAsyncThunk("subscribers/all", async (_, thun
     }
 })
 
+export const deleteSubscriber = createAsyncThunk("subscribers/delete", async (data, thunkAPI) => {
+    try {
+
+        const token = thunkAPI.getState().auth.user.token
+        const config = {
+            headers: {
+                // Accept: "application/json",
+                Authorization:`Bearer ${token}`
+            },
+        }   
+        
+        const url = `${BASE_URL}delete`;
+        const response = await axios.post(url, { email: data }, config);      
+        if (response.status === 200) {
+            toast.success(response.data.message);
+        }
+        return response.data;
+    } catch (error) {
+        let message
+        if (error.response) {           
+            if (error.response.status === 500) {
+                message = error.response.data.message
+                toast.error(message);
+            }
+            if (error.response.status === 400) {
+                message = error.response.data.message
+                toast.error(message);
+           }
+        }
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const unSubscribe = createAsyncThunk("subscribers/unsubscribe", async (data, thunkAPI) => {
+    try {
+
+        const token = thunkAPI.getState().auth.user.token
+        const config = {
+            headers: {
+                // Accept: "application/json",
+                Authorization:`Bearer ${token}`
+            },
+        }   
+        
+        const url = `${BASE_URL}unsubscribe`;
+        const response = await axios.post(url, { email: data }, config);      
+        if (response.status === 200) {
+            toast.success(response.data.message);
+        }
+        return response.data;
+    } catch (error) {
+        let message
+        if (error.response) {           
+            if (error.response.status === 500) {
+                message = error.response.data.message
+                toast.error(message);
+            }
+            if (error.response.status === 400) {
+                message = error.response.data.message
+                toast.error(message);
+           }
+        }
+        return thunkAPI.rejectWithValue(message);
+    }
+})
 
 export const subscribeSlice = createSlice({
     name: 'subscriber',
@@ -100,6 +165,25 @@ export const subscribeSlice = createSlice({
                     state.subscribers = []
                     state.isSuccess=false
                 })
+                .addCase(deleteSubscriber.pending, (state, action) => {
+                    state.isLoading =true
+                    })
+                    .addCase(deleteSubscriber.fulfilled, (state, action) => {
+                        state.isLoading = false
+                    })
+                    .addCase(deleteSubscriber.rejected, (state, action) => {
+                        state.isLoading = false
+                    })
+                    .addCase(unSubscribe.pending, (state, action) => {
+                        state.isLoading =true
+                        })
+                        .addCase(unSubscribe.fulfilled, (state, action) => {
+                            state.isLoading = false
+                                state.subscriber = action.payload.subscriber
+                        })
+                        .addCase(unSubscribe.rejected, (state, action) => {
+                            state.isLoading = false
+                        })
     }
   })
   

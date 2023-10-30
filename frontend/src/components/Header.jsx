@@ -68,18 +68,20 @@ const onLogout = async() => {
                                                         <>
                                                          <li><Link className="dropdown-item" to="/orders"><i className="fa fa-list"></i> My Orders</Link></li>
                                                         <li><Link className="dropdown-item" to="#"><i className="fa fa-heart"></i> My Wishlist</Link></li>
-                                                        <li><Link className="dropdown-item" to="/cart"><i className="fa fa-shopping-cart"></i> My Cart</Link></li>
+                                                            <li><Link className="dropdown-item" to="/cart"><i className="fa fa-shopping-cart"></i> My Cart</Link></li>
+                                                            <li><Link className="dropdown-item" to="/subscriptions"><i className="fa fa-envelope"></i> Subscriptions</Link></li>
+                                                            <li><Link className="dropdown-item" to="/mycoupons"><i className="fa fa-comments-dollar"></i> Coupons</Link></li>
                                                         </>
                                                     )}
                                                      {user && user.role === "admin" && (
                                                         <>
-                                <li><Link className="dropdown-item" to="/admin/orders"><i className="fa fa-list"></i>Orders</Link></li>
-                                <li><Link className="dropdown-item" to="#"><i className="fa fa-heart"></i>Wishlist</Link></li>
-                                <li><Link className="dropdown-item" to="/admin/cartItems"><i className="fa fa-shopping-cart"></i>Cart</Link></li>
-                                <li><Link className="dropdown-item" to="/products"><i className="fa fa-list"></i>Products</Link></li>
-                                <li><Link className="dropdown-item" to="/users"><i className="fa fa-heart"></i>Users</Link></li>
-                                <li><Link className="dropdown-item" to="/admin/coupons"><i className="fa fa-shopping-cart"></i>Coupons</Link></li>
-                                <li><Link className="dropdown-item" to="/admin/subscribers"><i className="fa fa-list"></i>Subscribers</Link></li>
+                                <li><Link className="dropdown-item" to="/admin/orders"><i className="fa fa-list"></i> Orders</Link></li>
+                                <li><Link className="dropdown-item" to="#"><i className="fa fa-heart"></i> Wishlist</Link></li>
+                                <li><Link className="dropdown-item" to="/admin/cartItems"><i className="fa fa-shopping-cart"></i> Cart</Link></li>
+                                <li><Link className="dropdown-item" to="/products"><i className="fa fa-list"></i> Products</Link></li>
+                                <li><Link className="dropdown-item" to="/users"><i className="fa fa-heart"></i> Users</Link></li>
+                                <li><Link className="dropdown-item" to="/admin/coupons"><i className="fa fa-comments-dollar"></i> Coupons </Link></li>
+                                <li><Link className="dropdown-item" to="/admin/subscribers"><i className="fa fa-envelope"></i> Subscribers</Link></li>
                                                             
                                                         </>
                                                     )}

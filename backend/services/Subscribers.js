@@ -16,9 +16,7 @@ class SubscriberService {
     static async findAll() {
         return await Subscribers.findAll()
     }
-    static async deleteOne(id) {
-        await Subscribers.destroy();
-    }
+    
 
 }
 

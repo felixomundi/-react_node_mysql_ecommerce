@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import {useNavigate,Link} from "react-router-dom"
-import { getSubscribers, subscribersSelect } from '../../features/subscribe/subscribe';
+import { deleteSubscriber, getSubscribers, subscribersSelect, unSubscribe } from '../../features/subscribe/subscribe';
 import Spinner from '../../components/Spinner'
 function Subscribers() {
   const dispatch = useDispatch();
@@ -22,7 +22,15 @@ function Subscribers() {
   }, [navigate, user, dispatch])
   if (isLoading) {
     return <Spinner></Spinner>
-  }
+    }
+    const deleteSub = (data) => {
+        dispatch(deleteSubscriber(data));
+        dispatch(getSubscribers());        
+    }
+    const updateStatus = (data) => {
+        dispatch(unSubscribe(data));
+        dispatch(getSubscribers());
+    }
   return (
     <div className="container-fluid py-5" style={{ minHeight: '90vh' }}>
           <div className="container">
@@ -55,12 +63,12 @@ function Subscribers() {
                                               <tr key={subscriber.id}>
                                                   <td>{index + 1}</td>
                                                   <td>{subscriber?.name}</td>
-                                                  <td>{subscriber?.email }</td>
-                                                  <td>{new Date(subscriber?.createdAt).toLocaleString('en-US')}</td>                                                  
+                                                  <td>{subscriber?.email}</td>
                                                   <td>{subscriber?.status}</td>
-                                                  <td><Link to={`/admin/subscribers/${subscriber?.id}`}><i className="fa fa-eye text-info"></i></Link>
-                                                  <Link to="#"><i className="fa fa-trash px-1 text-danger"></i></Link>
-                                                  
+                                                  <td>{new Date(subscriber?.createdAt).toLocaleString('en-US')}</td>                                                
+                                                  <td><Link to="#"><i className="fa fa-check" onClick={() => updateStatus(subscriber?.email)}></i></Link>
+                                                  <Link to="#"><i className="fa fa-pencil px-1"></i></Link>
+                                                  <Link to="#" onClick={()=>deleteSub(subscriber?.email)}><i className="fa fa-trash px-1 text-danger"></i></Link>                                                  
                                                   </td>
                                               </tr>
                                           ))}
