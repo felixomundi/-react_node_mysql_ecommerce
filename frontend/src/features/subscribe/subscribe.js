@@ -6,7 +6,7 @@ const initialState = {
     isLoading: false,
     subscriber: {},
     subscribers: [],
-    isSuccess:null,
+    isSuccess:false,
 }
   
 export const newSubscribe = createAsyncThunk("subscribers/create", async (data, thunkAPI) => {
@@ -37,6 +37,32 @@ export const newSubscribe = createAsyncThunk("subscribers/create", async (data, 
         return thunkAPI.rejectWithValue(message);
     }
 })
+export const getSubscribers = createAsyncThunk("subscribers/all", async (_, thunkAPI) => {
+    try {
+
+        const token = thunkAPI.getState().auth.user.token
+        const config = {
+            headers: {
+                Accept: "application/json",
+                Authorization:`Bearer ${token}`
+            },
+          }      
+        const url = `${BASE_URL}`;
+        const response = await axios.get(url, config);        
+        return response.data;
+    } catch (error) {
+        let message
+        if (error.response) {           
+            if (error.response.status === 500) {
+                message = error.response.data.message
+                toast.error(message);
+           }
+        }
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+
 export const subscribeSlice = createSlice({
     name: 'subscriber',
     initialState,
@@ -61,10 +87,24 @@ export const subscribeSlice = createSlice({
                 state.subscriber = {}
                 state.isSuccess=false
             })
+            .addCase(getSubscribers.pending, (state, action) => {
+                state.isLoading =true
+                })
+                .addCase(getSubscribers.fulfilled, (state, action) => {
+                    state.isLoading = false
+                    state.subscribers = action.payload.subscribers
+                    state.isSuccess = true
+                })
+                .addCase(getSubscribers.rejected, (state, action) => {
+                    state.isLoading = false
+                    state.subscribers = []
+                    state.isSuccess=false
+                })
     }
   })
   
 
 //   export const {  } = subscribeSlice.actions
   
-  export default subscribeSlice.reducer
+export default subscribeSlice.reducer
+export const subscribersSelect = state=>state.subscriber.subscribers  

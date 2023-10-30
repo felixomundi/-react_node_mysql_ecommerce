@@ -19,7 +19,7 @@ const onLogout = async() => {
     return (
         <div className="main-navbar shadow-sm">
         <div className="top-navbar">
-            <div className="container-fluid">
+            <div className="container-fluid py-3">
                 <div className="row">
                     <div className="col-md-2 my-auto d-none d-sm-none d-md-block d-lg-block">
                         <h5 className="brand-name" onClick={redirectHome}>Nyagaka Ecom</h5>
@@ -79,6 +79,7 @@ const onLogout = async() => {
                                 <li><Link className="dropdown-item" to="/products"><i className="fa fa-list"></i>Products</Link></li>
                                 <li><Link className="dropdown-item" to="/users"><i className="fa fa-heart"></i>Users</Link></li>
                                 <li><Link className="dropdown-item" to="/admin/coupons"><i className="fa fa-shopping-cart"></i>Coupons</Link></li>
+                                <li><Link className="dropdown-item" to="/admin/subscribers"><i className="fa fa-list"></i>Subscribers</Link></li>
                                                             
                                                         </>
                                                     )}
