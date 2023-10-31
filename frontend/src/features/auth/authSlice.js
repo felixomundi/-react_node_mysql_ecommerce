@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:5000/api/v1/users/'
 
 
 // Get user from localStorage
-const user = JSON.parse(localStorage.getItem('user'))
+const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
   user: user ? user : null,
@@ -55,7 +55,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 })
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout()
+  return await authService.logout()
 });
 
 

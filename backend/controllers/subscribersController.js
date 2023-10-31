@@ -170,9 +170,41 @@ async function unSubscribe(req, res) {
     
 }
 
+async function createOrUpdateSubscription(req, res) {
+    try {
+
+        const subscriber = await SubscriberService.findByEmail(req.user.mail);
+        return res.status(200).json({
+            subscriber
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message:"Failed to fetch subscriber"
+        })
+    }
+    
+}
+
+async function getSubscriber(req, res) {
+    try {
+       
+        const subscriber = await SubscriberService.findByEmail(req.user.email);
+        return res.status(200).json({
+            subscriber
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message:"Failed to fetch subscriber"
+        })
+    }
+    
+}
+
 module.exports = {
     newSubscribe,
     getSubscribers,
     deleteSubscriber,
     unSubscribe,
+    createOrUpdateSubscription,
+    getSubscriber
 }

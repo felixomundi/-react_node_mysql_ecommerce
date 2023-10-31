@@ -6,8 +6,10 @@
 
 a{
   color:#088178;
-  text-decoration: non;
+  text-decoration: none;
+  cursor: pointer;
 }
+
 /* subscribe css */
 .subscribe{
     background-color: #D3D3D3;

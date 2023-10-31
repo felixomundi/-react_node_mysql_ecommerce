@@ -64,12 +64,13 @@ const onLogout = async() => {
                                             {user && (
                                             <>
                                                     <li><Link className="dropdown-item" to="/profile"><i className="fa fa-user"></i> Profile</Link></li>
+                                                    
+                                                    <li><Link className="dropdown-item" to="/subscriptions"><i className="fa fa-envelope"></i> Subscriptions</Link></li>
                                                     {user && user.role === "user" && (
                                                         <>
                                                          <li><Link className="dropdown-item" to="/orders"><i className="fa fa-list"></i> My Orders</Link></li>
                                                         <li><Link className="dropdown-item" to="#"><i className="fa fa-heart"></i> My Wishlist</Link></li>
                                                             <li><Link className="dropdown-item" to="/cart"><i className="fa fa-shopping-cart"></i> My Cart</Link></li>
-                                                            <li><Link className="dropdown-item" to="/subscriptions"><i className="fa fa-envelope"></i> Subscriptions</Link></li>
                                                             <li><Link className="dropdown-item" to="/mycoupons"><i className="fa fa-comments-dollar"></i> Coupons</Link></li>
                                                         </>
                                                     )}
