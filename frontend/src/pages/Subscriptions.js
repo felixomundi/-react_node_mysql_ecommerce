@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createOrUpdateSubscription, getSubscriber } from '../features/subscribe/subscribe';
+import { createOrUpdateSubscription, deleteMySubscription, getSubscriber } from '../features/subscribe/subscribe';
 import  Spinner  from '../components/Spinner';
 function Subscriptions() {
   const user = useSelector(state => state.auth.user);
@@ -12,7 +12,7 @@ function Subscriptions() {
   const isLoading = useSelector(state => state.subscriber.isLoading);   
   const [name, setName] = useState(subscriber?.name);
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(subscriber?.status);
   useEffect(() => {
     if (!user) {
       navigate("/login?redirect=/subscriptions");
@@ -37,9 +37,11 @@ function Subscriptions() {
       name: name,
       status:status,
     }
-    dispatch(createOrUpdateSubscription(data));
-   
+    dispatch(createOrUpdateSubscription(data));   
   } 
+  function DeleteMySubscription() {
+    dispatch(deleteMySubscription())
+  }
  
   if (isLoading) {
     return <Spinner></Spinner>
@@ -69,10 +71,8 @@ function Subscriptions() {
               Status
             </label>
               <select name="status"  className='form-control' onChange={(e)=>setStatus(e.target.value)}>
-                <option value="">Choose Subscription</option>
-                <option value="Active">Receive Updates</option>
-                <option value="Inctive">Don't Receive Updates</option>
-                <option value="Unsubscribe">Unsubscribe from All Updates</option>
+                <option value ="Active" selected = {status === "Active" ?? ""}>Receive Updates</option>
+                <option value="Inactive" selected = {status === "Inactive" ?? ""}>Don't Receive Updates</option>
                 </select>
             </div>      
             
@@ -84,7 +84,11 @@ function Subscriptions() {
           }} className='py-2 btn btn-light'>Update</button>
          </div>
         </form>
-      </div> 
+              <div className="py-3">
+                <button className='btn btn-danger' type='button' onClick={()=>DeleteMySubscription()}><i className="fa fa-trash"></i> Delete Subscription</button>
+           </div>
+            </div> 
+            
         }        
         </div>
       </div>

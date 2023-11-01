@@ -55,7 +55,7 @@ async function getSubscribers(req, res) {
         })
     } catch (error) {
         return res.status(500).json({
-            message:"Failed to fetch subscribers"
+            message:"Something went wrongs"
         })
     }
 }
@@ -79,10 +79,7 @@ async function deleteSubscriber(req, res) {
             })
         }
 
-        const user = await User.findOne({
-            where:{id:req.user.id}
-        })
-        if (user.role === "admin") {
+        
         const subscriber = await SubscriberService.findByEmail(email);
         if(!subscriber){
             return res.status(200).json({
@@ -93,25 +90,7 @@ async function deleteSubscriber(req, res) {
         return res.status(200).json({
             message:"Subscriber deleted"
          })
-        }
-
-        else if (user.role === "user") {
-            if (user.email !== email) {
-                return res.status(400).json({
-                   message:"You are not subscribed"
-               }) 
-            }
-        const subscriber = await SubscriberService.findByEmail(email);
-        if(!subscriber){
-            return res.status(200).json({
-               message:"Subscriber Not Found"
-            })
-        }
-        await subscriber.destroy();
-        return res.status(200).json({
-            message:"Subscriber deleted"
-         })
-        }      
+         
         
     } catch (error) {
         return res.status(500).json({
@@ -173,13 +152,37 @@ async function unSubscribe(req, res) {
 async function createOrUpdateSubscription(req, res) {
     try {
 
-        const subscriber = await SubscriberService.findByEmail(req.user.mail);
+        const {name, status} = req.body
+        const subscriber = await SubscriberService.findByEmail(req.user.email);
+        if(!subscriber){
+            return res.status(400).json({
+            message: "Subscriber Not Found"
+            })
+        }
+       
+        let updated;
+        if (status === "Active") {
+          updated =   await subscriber.update({
+                status: "Active",
+                name
+            })
+        }
+
+        if (status === "Inactive") {
+        updated =  await subscriber.update({
+                status: "Inactive",
+                name
+            })
+        }
         return res.status(200).json({
-            subscriber
+            message: "Subscriber Updated",
+            subscriber:updated
         })
+        
+
     } catch (error) {
         return res.status(500).json({
-            message:"Failed to fetch subscriber"
+            message:"Something went wrong"
         })
     }
     
@@ -194,10 +197,30 @@ async function getSubscriber(req, res) {
         })
     } catch (error) {
         return res.status(500).json({
-            message:"Failed to fetch subscriber"
+            message:"Something went wrong"
         })
     }
     
+}
+async function deleteMySubscription(req, res) {
+    try {
+        const subscriber = await SubscriberService.findByEmail(req.user.email);
+        if (!subscriber) {
+            return res.status(400).json({
+                message: "Subscriber Not Found",
+                subscriber:{}
+            })
+        }
+        await subscriber.destroy();
+        return res.status(200).json({
+            message: "Subscriber Deleted",
+            subscriber:{}
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message:"Something went wrong"
+        })
+    }
 }
 
 module.exports = {
@@ -206,5 +229,6 @@ module.exports = {
     deleteSubscriber,
     unSubscribe,
     createOrUpdateSubscription,
-    getSubscriber
+    getSubscriber,
+    deleteMySubscription
 }

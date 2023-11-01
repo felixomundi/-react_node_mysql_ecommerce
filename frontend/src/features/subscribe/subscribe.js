@@ -131,19 +131,24 @@ export const unSubscribe = createAsyncThunk("subscribers/unsubscribe", async (da
 
 export const createOrUpdateSubscription = createAsyncThunk("subscribers/createorupdate", async (data, thunkAPI) => {
     try {
-
         const token = thunkAPI.getState().auth.user.token
         const config = {
             headers: {
                 // Accept: "application/json",
                 Authorization:`Bearer ${token}`
             },
-        }   
-        
+        }
         const url = `${BASE_URL}createorupdate`;
         const response = await axios.post(url, data, config);      
         if (response.status === 200) {
-            toast.success(response.data.message);
+            if (response.data.subscriber === null) {
+                await localStorage.removeItem("subscriber")
+                toast.success(response.data.message);
+            } else if (response.data.subscriber !== null) {
+                await localStorage.removeItem("subscriber")
+                await localStorage.setItem("subscriber", JSON.stringify(response.data.subscriber));
+                toast.success(response.data.message);
+            }
         }
         return response.data;
     } catch (error) {
@@ -185,6 +190,41 @@ export const getSubscriber = createAsyncThunk("subscribers/getsubscriber", async
                 }
         }
 
+        return response.data;
+    } catch (error) {
+        let message
+        if (error.response) {           
+            if (error.response.status === 500) {
+                message = error.response.data.message
+                toast.error(message);
+            }
+            if (error.response.status === 400) {
+                message = error.response.data.message
+                toast.error(message);
+           }
+        }
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const deleteMySubscription = createAsyncThunk("subscribers/deleteMySubscription", async (_, thunkAPI) => {
+    try {
+
+        const token = thunkAPI.getState().auth.user.token
+        const config = {
+            headers: {
+                Authorization:`Bearer ${token}`
+            },
+        }   
+        let data 
+        const url = `${BASE_URL}deleteMySubscription`;
+        const response = await axios.post(url,{data}, config);    
+        if (response.status === 200) {
+            if (response.data.subscriber === null) {
+                await localStorage.removeItem("subscriber");
+                toast.success(response.data.message)
+            }           
+        }      
         return response.data;
     } catch (error) {
         let message
@@ -270,12 +310,25 @@ export const subscribeSlice = createSlice({
                 })
                 .addCase(getSubscriber.pending, (state, action) => {
                     state.isLoading = true
+                    state.subscriber = {}
                 })
                 .addCase(getSubscriber.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.subscriber = action.payload.subscriber
                 })
                 .addCase(getSubscriber.rejected, (state, action) => {
+                    state.isLoading = false
+                    state.subscriber = {}
+                })
+                .addCase(deleteMySubscription.pending, (state, action) => {
+                    state.isLoading = true
+                    state.subscriber = {}
+                })
+                .addCase(deleteMySubscription.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.subscriber = {}
+                })
+                .addCase(deleteMySubscription.rejected, (state, action) => {
                     state.isLoading = false
                     state.subscriber = {}
                 })
