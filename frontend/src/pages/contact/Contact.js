@@ -11,11 +11,13 @@ const {isLoading, isError } = useSelector(state => state.contact);
 const{ user }= useSelector(state=> state.auth)
 const [subject, setSubject] = useState("");
 const [message, setMessage] = useState("");
-const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
 const contactData = {
 subject,
 message,
 email,
+name
 };
 
 useEffect(() => {
@@ -31,10 +33,10 @@ if(user && user.role !== "user") {
 
 
 const sendEmail = async (e) => {
-e.preventDefault();
-dispatch(createContact(contactData, toast))
-dispatch(reset())
-navigate('/')
+    e.preventDefault();
+dispatch(createContact(contactData));
+// dispatch(reset())
+// navigate('/')
 };
 
 if (isLoading) {
@@ -44,8 +46,6 @@ return(<Spinner/>)
 return (
 <Fragment>
 <div>
-
-
 <div className="contact">
 <div className="container">
 <div className="row">
@@ -69,7 +69,7 @@ return (
 <div className="col-md-12">
 
 <h5>Phone</h5>
-<p><i className="fa fa-phone-alt"> </i>  0745566505</p>
+<p><i className="fa fa-phone-alt"> </i> 0745566505</p>
 
 </div>
 </div>
@@ -82,6 +82,10 @@ return (
 <div id="success"></div>
 <form onSubmit={sendEmail}>
 
+<div className="control-group mb-3">
+<label htmlFor="name">Name</label>
+<input type="text" name="name" required value={name} onChange={(e)=>setName(e.target.value)} className="form-control" />
+</div>
 <div className="control-group mb-3">
 <label htmlFor="email" className='mb-2'>Email</label>
 <input type="email" className="form-control" 

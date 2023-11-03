@@ -31,6 +31,7 @@ app.use("/api/v1/coupon", require("./routes/couponTypeRoute"));
 app.use("/api/v1/codes", require("./routes/couponCodeRoute"));
 app.use("/api/v1/orders", require("./routes/orderRoute.js"));
 app.use("/api/v1/subscribers", require("./routes/subscribeRoute.js"));
+app.use("/api/v1/contact", require("./routes/contactRoute.js"));
 
 app.listen(
    PORT,

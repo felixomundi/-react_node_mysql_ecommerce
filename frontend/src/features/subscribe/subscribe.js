@@ -19,8 +19,15 @@ export const newSubscribe = createAsyncThunk("subscribers/create", async (data, 
           }      
         const url = `${BASE_URL}create`;
         const response = await axios.post(url,  data, config );
-        if (response.status === 200) {
+        if (response.status === 201) {
             toast.success(response.data.message);
+            if (response.data.subscriber === null) {
+                await  localStorage.removeItem("subscriber");
+              }
+             else if (response.data.subscriber !== null) {
+                  await  localStorage.removeItem("subscriber");
+                  await localStorage.setItem('subscriber', JSON.stringify(response.data.subscriber));
+                }
         }
         return response.data;
     } catch (error) {
@@ -220,9 +227,10 @@ export const deleteMySubscription = createAsyncThunk("subscribers/deleteMySubscr
         const url = `${BASE_URL}deleteMySubscription`;
         const response = await axios.post(url,{data}, config);    
         if (response.status === 200) {
+            toast.success(response.data.message);
             if (response.data.subscriber === null) {
                 await localStorage.removeItem("subscriber");
-                toast.success(response.data.message)
+                
             }           
         }      
         return response.data;

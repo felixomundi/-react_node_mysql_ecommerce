@@ -18,7 +18,7 @@ return (
       <div className="col-md-3 mb-3 text-start">
         <h4>Quick Links</h4>
         <p><Link to="/contact">Contact Us</Link></p>
-        <p><Link to="#">About Us</Link></p>        
+        <p><Link to="https://nyagaka.com/about" target='_blank'>About Us</Link></p>        
       </div>
       <div className="col-md-3 mb-3 text-start social">
             <h4>Social Links</h4>

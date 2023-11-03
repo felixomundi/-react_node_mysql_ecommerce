@@ -11,9 +11,8 @@ const initialState = {
 
 export const createContact = createAsyncThunk('contact/addContact',
             async (contactData, thunkAPI) => {
-            try {
-                const token = thunkAPI.getState().auth.user.token   
-                return await contactService.createContact(contactData,token)
+            try {               
+                return await contactService.createContact(contactData)
             } catch (error) {
                 const message =
                 (error.response &&

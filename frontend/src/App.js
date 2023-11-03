@@ -32,7 +32,7 @@ import NotFoundPage from "./pages/NotFoundPage.js";
 import SystemOrders from './admin/orders/SystemOrders'
 import SystemOrderDetail from './admin/orders/SystemOrderDetail'
 import Subscribers from './admin/newsletter/Subscribers'
-import Subscriptions from './pages/Subscriptions'
+// import Subscriptions from './pages/Subscriptions'
 function App() { 
   const dispatch = useDispatch();  
   const  user  = useSelector((state) => state.auth.user);
@@ -67,7 +67,7 @@ function App() {
             <Route path='/placeorder' element={<Placeorder />} />
             <Route path='/orders' element={<Order />}></Route>
             <Route path='/orders/:id' element={<OrderDetail />}></Route>
-            <Route path='/subscriptions' element={<Subscriptions/>}></Route>
+            {/* <Route path='/subscriptions' element={<Subscriptions/>}></Route> */}
             <Route path='/admin/cartItems' element={<CartItems />} />
             <Route path='/admin/coupons' element={<Coupons />} />
             <Route path='/admin/coupons/create' element={<CreateCoupon />} />

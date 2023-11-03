@@ -65,7 +65,7 @@ const onLogout = async() => {
                                             <>
                                                     <li><Link className="dropdown-item" to="/profile"><i className="fa fa-user"></i> Profile</Link></li>
                                                     
-                                                    <li><Link className="dropdown-item" to="/subscriptions"><i className="fa fa-envelope"></i> Subscriptions</Link></li>
+                                                    {/* <li><Link className="dropdown-item" to="/subscriptions"><i className="fa fa-envelope"></i> Subscriptions</Link></li> */}
                                                     {user && user.role === "user" && (
                                                         <>
                                                          <li><Link className="dropdown-item" to="/orders"><i className="fa fa-list"></i> My Orders</Link></li>
