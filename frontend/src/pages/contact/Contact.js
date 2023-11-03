@@ -1,13 +1,12 @@
 import React, { useState,Fragment, useEffect } from 'react'
 import {  useNavigate } from 'react-router-dom'
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux'
-import { createContact, reset } from '../../features/contact/contactSlice' 
+import { createContact, reset} from '../../features/contact/contactSlice' 
 import Spinner from '../../components/Spinner'
 const Contact = () => {
 const dispatch = useDispatch()
 const navigate = useNavigate()
-const {isLoading, isError } = useSelector(state => state.contact);
+const {isLoading,isSuccess  } = useSelector(state => state.contact);
 const{ user }= useSelector(state=> state.auth)
 const [subject, setSubject] = useState("");
 const [message, setMessage] = useState("");
@@ -21,22 +20,21 @@ name
 };
 
 useEffect(() => {
-if (isError) {        
-toast.error(message);
+    if (isSuccess) {        
+    dispatch(reset());
+    navigate("/");
 }
 
 if(user && user.role !== "user") {
     navigate('/')
    
 }
-}, [user,navigate,isError,message]);
+}, [user, navigate, isSuccess, dispatch]);
 
 
 const sendEmail = async (e) => {
     e.preventDefault();
-dispatch(createContact(contactData));
-// dispatch(reset())
-// navigate('/')
+    dispatch(createContact(contactData));
 };
 
 if (isLoading) {
@@ -84,7 +82,7 @@ return (
 
 <div className="control-group mb-3">
 <label htmlFor="name">Name</label>
-<input type="text" name="name" required value={name} onChange={(e)=>setName(e.target.value)} className="form-control" />
+<input type="text" name="name" required value={name} placeholder='Name' onChange={(e)=>setName(e.target.value)} className="form-control" />
 </div>
 <div className="control-group mb-3">
 <label htmlFor="email" className='mb-2'>Email</label>
