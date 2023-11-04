@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { subscriberSchema } from '../Validations/subscribe';
 import { useFormik } from 'formik';
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { newSubscribe } from '../features/subscribe/subscribe';
 // import {useNavigate} from "react-router-dom"
 function Subscibe() {
   const dispatch = useDispatch();
-  // const { isSuccess } = useSelector(state => state.subscriber);
+  const { isSuccess } = useSelector(state => state.subscriber);
   // const navigate =useNavigate()
   const formik = useFormik({
     initialValues: {
@@ -16,9 +16,15 @@ function Subscibe() {
     validationSchema: subscriberSchema,
     onSubmit: (values) => {
       dispatch(newSubscribe(values));      
-      formik.resetForm();    
+          
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      formik.resetForm();
+   }
+ },[formik,isSuccess])
 
 
   

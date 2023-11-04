@@ -223,9 +223,6 @@ export const authSlice = createSlice({
       })
       .addCase(profileUpdate.rejected, (state, action) => {
         state.isLoading = false
-        // state.isError = true
-        // state.message = action.payload
-        // state.user = null
       })
       .addCase(getUsers.pending, (state) => {
         state.isLoading = true;

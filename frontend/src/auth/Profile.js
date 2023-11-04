@@ -1,7 +1,7 @@
 import React, {useEffect, useState,} from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { profileUpdate,  updatedUserPassword } from '../features/auth/authSlice'
+import { profileUpdate,  reset,  updatedUserPassword } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import { toast } from 'react-toastify'
 
@@ -9,9 +9,9 @@ function Profile() {
     
 const dispatch = useDispatch();
 const navigate = useNavigate();
-const { user, isLoading, isError, message } = useSelector((state) => state.auth)
+const { user, isLoading, isError, message,isSuccess } = useSelector((state) => state.auth)
 
-const [name, setName] = useState(user?.name);
+    const [name, setName] = useState(user?.name);
     const [current_password, setCurrentPassword] = useState("");
     const [new_password, setNewPassword] = useState("");
     const [confirm_password, setConfirmPassword] = useState("");
@@ -20,17 +20,20 @@ useEffect(() => {
 if (!user) {
 navigate("/login?redirect=/profile");
     }
-
-
-}, [user, isError, message,navigate, dispatch]);
+    if (isSuccess) {
+        setConfirmPassword("");
+        setCurrentPassword("");
+        setNewPassword("");
+        dispatch(reset());
+    }
+}, [user, isError, message,navigate, dispatch, isSuccess]);
 
     const submitHandler = async(e) => {
         e.preventDefault();
         const userData = {
         name
         }
-         await  dispatch(profileUpdate(userData));
-
+        dispatch(profileUpdate(userData));
     };
     const updatePassword = async (e) => {
         e.preventDefault();
@@ -50,13 +53,10 @@ navigate("/login?redirect=/profile");
             toast.warning("New Password and Confirm Password do not match")
             }
         else if(current_password && new_password && confirm_password){
-            await dispatch(updatedUserPassword(data));
-                      
+            await dispatch(updatedUserPassword(data));                      
         }
     }
-    
-    
-
+       
 if (isLoading) {
 return <Spinner />
 }
