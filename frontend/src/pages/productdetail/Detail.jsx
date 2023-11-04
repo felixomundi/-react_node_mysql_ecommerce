@@ -14,14 +14,12 @@ function Detail() {
     const product = useSelector(state => state.products.product);
     const quantity = useSelector(state => state.cart.quantity);
       
-    useEffect(() => {
-        
+    useEffect(() => {        
           dispatch(productDetail(id));
      
         if (isError) {
-       return  navigate("/");
-        }
-        
+            return navigate("/");            
+        }        
         dispatch(reset())
     }, [id, dispatch, isError, navigate]);
 

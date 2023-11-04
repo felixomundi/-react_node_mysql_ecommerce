@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import {useNavigate} from 'react-router-dom'
 import { reset,createProduct } from '../../features/products/productSlice'
 import Spinner from '../../components/Spinner'
-function EditProduct() {
+function AddProduct() {
 
 const [name, setName] = useState("");
 const [price, setPrice] = useState("");
@@ -64,9 +64,9 @@ return (
 <Container className='py-5'>
 <div className="container">
 <Row className='justify-content-center'>
-<Col md={10} xl={10} sm={12} className="">
+<Col md={10} xl={10} sm={12} >
 <div className="card-header">
-Add Product
+<h3>Add Product</h3>
 </div>
 
 <Form className='my-2' onSubmit={onSubmit} encType='multipart/form-data'>
@@ -117,4 +117,4 @@ placeholder="Enter Description"></textarea>
 )
 }
 
-export default EditProduct
+export default AddProduct
