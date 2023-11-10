@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {  getProduct, reset } from "../../features/products/productSlice";
+import {  getProduct, reset, updateProduct } from "../../features/products/productSlice";
 import Spinner from '../../components/Spinner'
 
 
@@ -12,10 +12,10 @@ const { isError,  isLoading } = useSelector((state) => state.products);
 const { user } = useSelector((state) => ({ ...state.auth }));
 const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [name, setName] = useState(product && product.name);
-    const [quantity, setQuantity] = useState(product && product.quantity);
-    const [description, setDescription] = useState(product &&  product.description);
-    const [price, setPrice] = useState(product &&  product.price);
+    const [name, setName] = useState("");
+    const [quantity, setQuantity] = useState();
+    const [description, setDescription] = useState();
+    const [price, setPrice] = useState();
     const { id } = useParams();
     const [file, setFile] = useState();
     const [preview, setPreview] = useState()
@@ -30,13 +30,13 @@ const dispatch = useDispatch();
             if(id) {
                 dispatch(getProduct(id));            
             }
-            if(isError) {
-                navigate("/products");
-            }
+            // if(isError) {
+            //     navigate("/products");
+            // }
 
             //
             if (!file) {
-            setPreview(undefined)
+            setPreview(undefined);
             return
             }
             dispatch(reset())
@@ -44,14 +44,34 @@ const dispatch = useDispatch();
         setPreview(objectUrl)
 
         // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-
+        return () => URL.revokeObjectURL(objectUrl);
         
         }, [user,navigate,dispatch,id,isError,file]);
 
       
-    const handleSubmit = async(e) => {
-        e.preventDefault();       
+    const handleSubmit = (e) => {
+        e.preventDefault();  
+        const productData = {
+            name,
+            price,
+            image:file,
+            description,
+            quantity,
+            }
+         
+        const formData = new FormData();
+        formData.append("name", productData.name);
+        formData.append("quantity", productData.quantity);
+        formData.append("price", productData.price);
+      
+        formData.append("description", productData.description);
+        if (file) {           
+            formData.append("image", productData.image);
+        }
+        if (id) {
+            dispatch(updateProduct({id, formData}))
+        }
+        console.log(formData);
        
     }
     
@@ -72,10 +92,10 @@ return (
                        
                         <div className="card-body">
                         <div className="row">
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} encType="multipart/form-data">
                                 <div className="form-group col-md-12 mb-3">
                                     <label htmlFor="name">Name</label>
-                                    <input type="text" name="name" value={name} onChange={(e)=>setName(e.target.value)} className="form-control" />
+                                    <input type="text" name="name" value={name}  onChange={(e)=>setName(e.target.value)} className="form-control" />
                                     </div>
                                     <div className="form-group col-md-12 mb-3">
                                     <label htmlFor="price">Price</label>

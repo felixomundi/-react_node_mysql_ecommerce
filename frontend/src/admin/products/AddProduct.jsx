@@ -38,7 +38,8 @@ price,
 image,
 description,
 quantity,
-}
+    }
+    
 const formData = new FormData();
 formData.append("name", productData.name);
 formData.append("quantity", productData.quantity);

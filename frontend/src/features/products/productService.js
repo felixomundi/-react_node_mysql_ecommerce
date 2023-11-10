@@ -62,13 +62,15 @@ const getProduct = async (id, token ) => {
 };
 
 // Update Product by admin
-const updateProduct = async (updatedProductData,id,token) => {
+const updateProduct = async (updatedProductData, id, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type":"application/form-data"
     },
   }
-  const response = await axios.put(API_URL + id, updatedProductData,config);
+  const response = await axios.patch(API_URL + id, updatedProductData , config);
+  console.log(response);
   return response.data;
   
 };

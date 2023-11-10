@@ -56,7 +56,7 @@ dispatch(updateUserDetails({ id, updatedUserData }));
 const onInputChange = (e) => {
 const { name, value } = e.target;
 setUserData({ ...userData, [name]: value });
- console.log(userData)
+
 };
 
 const handleClear = () => {

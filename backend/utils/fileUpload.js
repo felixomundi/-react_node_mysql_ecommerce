@@ -23,7 +23,7 @@ const upload = multer({
     if(mimeType && extname) {
       return cb(null, true)
   }
-  cb('Give proper files formate to upload')
+  cb('Give proper files format to upload')
   },
 });
 

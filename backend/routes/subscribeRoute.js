@@ -1,14 +1,7 @@
 const express = require("express");
-const { newSubscribe, getSubscribers,
-    deleteSubscriber,
-    unSubscribe,
-    createOrUpdateSubscription,
-    getSubscriber,
-    deleteMySubscription
-    } = require("../controllers/subscribersController");
+const { newSubscribe,getSubscribers,deleteSubscriber,unSubscribe,createOrUpdateSubscription,getSubscriber,deleteMySubscription } = require("../controllers/subscribersController");
 const router = express.Router();
-
-const protect = require("../middleware/authmiddleware");
+const protect = require("../middleware/authMiddleware");
 const isAdmin = require("../middleware/adminMiddleware");
 router.post("/create", newSubscribe);
 router.get("/", isAdmin, getSubscribers);

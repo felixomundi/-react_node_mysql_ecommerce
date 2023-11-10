@@ -138,19 +138,28 @@ const getProductDetail = async (req, res) => {
     }
 }
 const updateProduct = async (req, res) => {
-    let id = req.params.id;
-    const product = await Product.findOne({ where: { id: id } })
+    
+    let n = req.body.name
+    if (!n) {
+        return res.status(400).json({
+            message:"Name is required"
+        })
+    }
+    const product = await Product.findOne({ where: { id: req.params.id } })
     if (!product) {
-        return res.status(404).json("Product not found")
-    } else {
+        return res.status(404).json({
+            message:"Product not found"
+        })
+    } 
+
         const { id, name, description, image, price, quantity } = product;
         product.id = id;
         product.name = req.body.name || name;
         product.description = req.body.description || description;
-        product.image = req.body.image || image;
+        product.image =  req?.file ? req?.file?.path : image;
         product.price = req.body.price || price;
         product.quantity = req.body.quantity || quantity;
-        const updatedProduct = await product.update({ where: { id: id } })
+        const updatedProduct = await product.update();
         return res.status(200).json({
             id: updatedProduct.id,
             name: updatedProduct.name,
@@ -159,7 +168,7 @@ const updateProduct = async (req, res) => {
             image: updatedProduct.image,
             quantity:updatedProduct.quantity,
         })
-    }
+   
 };
 
 /**

@@ -93,7 +93,8 @@ export const updateProduct = createAsyncThunk('products/updateProduct',
   try {
     const token = thunkAPI.getState().auth.user.token
     return await productService.updateProduct(updatedProductData, id, token)
-    } catch (error) {
+  } catch (error) {
+    console.log(error);
     const message =
       (error.response && error.response.data && error.response.data.message) ||
       error.message ||
@@ -213,17 +214,12 @@ export  const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
-       state.products = state.products.map((item) =>
-          item.id === action.payload.iid ? action.payload : item
-        );
-        toast.success('Product update Success')
+      //  state.products = state.products.map((item) =>
+      //     item.id === action.payload.id ? action.payload : item
+      //   );
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
       })    
       .addCase(productDetail.pending, (state) => {
         state.isLoading = true;
