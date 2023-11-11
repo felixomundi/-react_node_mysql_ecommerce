@@ -7,7 +7,7 @@ import Spinner from '../../components/Spinner'
 
 const UpdateProduct = () => { 
 const { isError,  isLoading } = useSelector((state) => state.products);
-    const product = useSelector(state => state.products.product); 
+    // const product = useSelector(state => state.products.product); 
    
 const { user } = useSelector((state) => ({ ...state.auth }));
 const dispatch = useDispatch();
