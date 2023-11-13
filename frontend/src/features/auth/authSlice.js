@@ -82,8 +82,6 @@ export const profileUpdate = createAsyncThunk('auth/profile', async (userData, t
   }
 });
 
-
-
 export const updateUserDetails = createAsyncThunk('auth/updateUserDetails',
   async ({ id, updatedUserData},thunkAPI) => {
   try {
@@ -109,8 +107,6 @@ export const getUsers = createAsyncThunk('auth/all',
     return thunkAPI.rejectWithValue(message)
   }
 });
-
-
 
 // Get a User
 export const getUser = createAsyncThunk(

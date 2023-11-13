@@ -10,16 +10,23 @@ const app = express();
 
 global.__basedir = __dirname;
 
-app.use(cors({
-    origin: ['http://localhost:3000'],
-    
-}));
-// app.use(express.json());
-// app.use(cookieParser())
-// app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json()); 
+const whitelist = ['http://localhost:8000'];
 
-// for parsing application/xwww-
+const corsOptions = {
+    origin: (origin, callback) => {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
+        callback(null, true)
+      } else {
+          callback(new Error('Not Allowed by cors'), false)    
+      }
+    },
+    optionSuccessStatus:200,
+    
+}
+// configure cors
+app.use(cors(corsOptions));
+// pass json data
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
