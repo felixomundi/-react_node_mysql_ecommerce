@@ -11,7 +11,7 @@ async function ngrokConnect(){
   
 // console.log("first",url)
 
-const generateToken = async(req, res,next) => {
+const generateToken = async(req, res, next) => {
     const secret = process.env.CONSUMER_SECRET;
     const consumer = process.env.CONSUMER_KEY;
     const auth = new Buffer.from(`${consumer}:${secret}`).toString("base64");
