@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Spinner from '../../components/Spinner';
 import { homeProducts } from '../../features/products/productSlice';
 import { addToCart, cartTotal, getCartItems, totalItems } from '../../features/cart/cartSlice';
+
 function Home() {
 const navigate = useNavigate()
 const dispatch = useDispatch()
@@ -35,7 +36,8 @@ const dispatch = useDispatch()
   return (
       <>       
   
- <div className="products">
+      <div className="products">
+       
   <div className="container-fluid">
     <div className="row">
       <div className="text-center">

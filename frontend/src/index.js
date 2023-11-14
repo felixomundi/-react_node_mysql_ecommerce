@@ -13,10 +13,10 @@ if (process.env.NODE_ENV === 'development') {
   disableReactDevTools();
 }
 ReactDOM.render(
-  <React.StrictMode>
+  <React.StrictMode>   
     <Provider store={store}>
       <App />
-    </Provider>
+    </Provider>   
   </React.StrictMode>,
   document.getElementById('root')
 );
