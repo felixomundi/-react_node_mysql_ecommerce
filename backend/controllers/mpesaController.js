@@ -2,14 +2,17 @@ const axios = require("axios");
 require("dotenv").config();
 const ngrok = require("ngrok");
 async function ngrokConnect(){
-    var url = await ngrok.connect({
-    proto: 'http', 
-    addr: 5000,
-   });
-    console.log("url", url)
+    try {
+        var url = await ngrok.connect({
+            proto: 'http', 
+            addr: 5000,
+           });
+    } catch (error) {
+        console.log(error);
+    }
+    
 } ngrokConnect();
   
-// console.log("first",url)
 
 const generateToken = async(req, res, next) => {
     const secret = process.env.CONSUMER_SECRET;
