@@ -1,9 +1,9 @@
 // const db = require('../models');
-const {User }= require("../models");
+const {User }= require('./../../database/models')
 const jwt = require("jsonwebtoken");
 
 
-const protect = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
 
   let token
 
@@ -28,7 +28,10 @@ const protect = async (req, res, next) => {
       });
       if (!user) {
         return res.status(404).json("User not found");
-      }
+        }
+        if (user.role !== "admin") {
+          return res.status(403).json("Access Denied"); 
+        }
       req.user = user;
       next();
     } catch (error) {
@@ -38,5 +41,5 @@ const protect = async (req, res, next) => {
 }
 
 
-module.exports = protect;
+module.exports = isAdmin;
    

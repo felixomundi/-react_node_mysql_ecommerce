@@ -1,8 +1,8 @@
 const express = require("express");
 const  { addProduct, getProduct, getProducts, updateProduct, deleteProduct, getProductDetail, getProductsByAdmin } = require("../controllers/productController");
 const { upload } = require("../utils/fileUpload");
-const protect = require("../middleware/authMiddleware");
-const isAdmin = require("../middleware/adminMiddleware");
+const protect = require("./../middleware/authMiddleware");
+const isAdmin = require("./../middleware/adminMiddleware");
 const router = express.Router();
 
 router.get("/all-products", protect, getProductsByAdmin);

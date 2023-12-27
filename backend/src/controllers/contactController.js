@@ -1,7 +1,6 @@
 "use-strict"
 
-const { sendEmails } = require("../utils/email");
-
+const { sendEmails } = require("./../utils/email");
 async function contactUs(req,res) {
     try {
         const { name, email, subject, message } = req.body;

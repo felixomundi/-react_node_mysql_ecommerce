@@ -1,5 +1,4 @@
-const { Coupontype } = require("../models");
-const { Coupon } = require("../models");
+const { Coupontype,Coupon } = require('./../../database/models')
 
 const getCouponCodes = async (req, res) => {
     try {

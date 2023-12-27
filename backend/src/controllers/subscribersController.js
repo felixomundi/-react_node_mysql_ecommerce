@@ -1,7 +1,7 @@
 "use strict"
 
 const SubscriberService = require("../services/Subscribers")
-const {User} = require("../models")
+
 async function newSubscribe(req, res) {
     try {
         const { name, email } = req.body;

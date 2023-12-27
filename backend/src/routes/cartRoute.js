@@ -1,7 +1,7 @@
 const express  = require("express");
 const  { getCart,  addToCart, deleteCartItem, cartTotal, totalItems, clearCart, incrementCartItem, decrementCartItem, getUserCartItems, deleteCartItemByAdmin, applyCouponCode } = require("../controllers/cartController");
-const protect = require("../middleware/authMiddleware");
-const isAdmin = require("../middleware/adminMiddleware");
+const protect = require("./../middleware/authMiddleware");
+const isAdmin = require("./../middleware/adminMiddleware");
 const router = express.Router();
 router.get('/', protect, getCart);
 router.post('/add-to-cart', protect, addToCart);

@@ -1,7 +1,7 @@
 // const db = require('../models');
 const jwt = require('jsonwebtoken');
 // const User = db.users;
-const {User} = require("../models");
+const {User} = require('./../../database/models')
 const Token = {};
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
@@ -9,10 +9,6 @@ const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const dotenv = require('dotenv');
 dotenv.config();
-
-
-
-
 
 // Generate JWT
 const generateToken = (id) => {

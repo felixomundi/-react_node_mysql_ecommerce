@@ -32,20 +32,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-app.use('/api/v1/products', require('./routes/productRoute.js'));
-app.use('/api/v1/users', require('./routes/userRoute'));
-app.use("/api/v1/cart", require("./routes/cartRoute"));
-app.use("/api/v1/coupon", require("./routes/couponTypeRoute"));
-app.use("/api/v1/codes", require("./routes/couponCodeRoute"));
-app.use("/api/v1/orders", require("./routes/orderRoute.js"));
-app.use("/api/v1/subscribers", require("./routes/subscribeRoute.js"));
-app.use("/api/v1/contact", require("./routes/contactRoute.js"));
-
+app.use('/api/v1/products', require('./src/routes/productRoute.js'));
+app.use('/api/v1/users', require('./src/routes/userRoute.js'));
+app.use("/api/v1/cart", require("./src/routes/cartRoute.js"));
+app.use("/api/v1/coupon", require("./src/routes/couponTypeRoute.js"));
+app.use("/api/v1/codes", require("./src/routes/couponCodeRoute.js"));
+app.use("/api/v1/orders", require("./src/routes/orderRoute.js"));
+app.use("/api/v1/subscribers", require("./src/routes/subscribeRoute.js"));
+app.use("/api/v1/contact", require("./src/routes/contactRoute.js"));
 
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
-        res.sendFile(path.join(__dirname, 'views', '404.html'))
+        res.sendFile(path.join(__dirname, './src/views', '404.html'))
     } else if (req.accepts('json')) {
         res.json({ message: '404 Not Found' })
     } else {
