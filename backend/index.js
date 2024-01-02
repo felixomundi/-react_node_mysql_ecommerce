@@ -40,7 +40,7 @@ app.use("/api/v1/codes", require("./src/routes/couponCodeRoute.js"));
 app.use("/api/v1/orders", require("./src/routes/orderRoute.js"));
 app.use("/api/v1/subscribers", require("./src/routes/subscribeRoute.js"));
 app.use("/api/v1/contact", require("./src/routes/contactRoute.js"));
-
+app.use("/api/v1/mpesa", require("./src/routes/mpesaRoute.js"));
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
