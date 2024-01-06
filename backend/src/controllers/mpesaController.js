@@ -1,29 +1,31 @@
 require("dotenv").config();
 const axios = require("axios");
+const ngrok = require("ngrok");
 const getTimestamp = require("../utils/timestamp");
 const TIMESTAMP = getTimestamp();  
 const SHORTCODE = process.env.MPESA_SHORTCODE;
 const PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
 const PASSWORD = new Buffer.from(SHORTCODE + PASSKEY + TIMESTAMP).toString("base64");    
-const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
 const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
+const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
+const CALLBACK_URL = process.env.MPESA_CALLBACK_URL;
+async function ngrokConnect(){
+    try {
+        var url = await ngrok.connect({
+            proto: 'http', 
+            addr: 5000,
+            authtoken:process.env.AUTH_TOKEN,
+           });
+           console.log(url)
+    } catch (error) {
+        console.log(error);
+    }
 
-// const ngrok = require("ngrok");
-// async function ngrokConnect(){
-//     try {
-//         var url = await ngrok.connect({
-//             proto: 'http', 
-//             addr: 5000,
-//            });
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-// } ngrokConnect();
+} ngrokConnect();
 
 
 const generateToken = async(req, res, next) => {    
-   try {   
+   try {       
     const auth = new Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString("base64");
     const response = await axios.get("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
             {
@@ -35,16 +37,16 @@ const generateToken = async(req, res, next) => {
           req.token = response.data.access_token;         
         }        
       next() 
-      return response.data;    
-  
+      return response.data;
     } catch (error) {
-        return res.status(400).json(error.message)
+        return res.status(400).json(error);
     }
 }
 const stkPush = async (req, res) => {   
     try {
     const phone = req.body.phone.substring(1);
-    const amount = req.body.amount; 
+    // const amount = req.body.amount; 
+    const amount = 1;
         const data =  { 
         "BusinessShortCode": SHORTCODE,
         "Password": PASSWORD,
@@ -54,7 +56,7 @@ const stkPush = async (req, res) => {
         "PartyA": `254${phone}`,
         "PartyB": SHORTCODE,
         "PhoneNumber": `254${phone}`,
-        "CallBackURL": process.env.MPESA_CALLBACK_URL,
+        "CallBackURL": CALLBACK_URL,
         "AccountReference": `254${phone}`,
         "TransactionDesc": "Testing mpesa simulation"
     }
@@ -79,14 +81,15 @@ const stkPush = async (req, res) => {
 }
 const callBack = async(req, res) => {    
     try {
-        const callBackData = req.body.Body.stkCallback;
-        console.log(callBackData);       
+        // const callBackData = req.body.Body.stkCallback;
+        // console.log(callBackData);       
             // const data = callBackData.Body.stkCallback.CallbackMetadata;           
             // const amount = data.Item[0].Value;
             // const transaction = data.Item[1].Value;
             // const balance = data.Item[2].Value;
             // const date = data.Item[3].Value;        
-            // const phone = data.Item[4].Value;            
+            // const phone = data.Item[4].Value;  
+            console.log(req.body)          
         
     } catch (error) {
         return res.status(500).json(error.message);
