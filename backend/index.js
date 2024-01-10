@@ -6,6 +6,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 const app = express();
+const HOSTNAME = "127.0.0.1";
 
 global.__basedir = __dirname;
 
@@ -68,7 +69,7 @@ app.all('*', (req, res) => {
 app.listen(
    PORT,
     () => {
-        console.log(`Server running on ${PORT}`);
+        console.log(`Server running on http://${HOSTNAME}:${PORT}/`);
         
     }
 );

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { default: axios } = require("axios");
 const MpesaService = require("../services/MpesaService");
 const ngrok = require("ngrok");
 async function ngrokConnect(){
@@ -40,16 +41,20 @@ const stkPush = async (req, res) => {
                 message:"Provide Amount to Pay"
             })
         }   
-        const response = await MpesaService.stkPushService(phone, amount);
-        console.log(response)
-        //   return res.status(200).json(response.data.ResponseDescription);
-        return  res.status(200).json(response)
- 
+        const response = await MpesaService.stkPushService(phone, amount,req);     
+        if(response.ResponseCode == "0"){
+            // save data to database
+            const CheckoutRequestID = response.CheckoutRequestID;
+            const MerchantRequestID = response.MerchantRequestID
+            return res.status(200).json({CheckoutRequestID,MerchantRequestID})
+        }  
+        
    }
-       catch(error) {
-            console.log(error)
-           return res.status(400).json(error.response.data.errorMessage)
-           //error.message
+       catch(error) {            
+           if(error){
+            return res.status(400).json(error)
+           }
+          
     };
 }
 const callBack = async(req, res) => {    
@@ -62,7 +67,8 @@ const callBack = async(req, res) => {
             // const balance = data.Item[2].Value;
             // const date = data.Item[3].Value;        
             // const phone = data.Item[4].Value;  
-            console.log(req.body)          
+            
+        
         
     } catch (error) {
         return res.status(500).json(error.message);
@@ -76,7 +82,7 @@ const stkPushStatus = async(req, res)=>{
                 message:"Please Provide CheckoutRequestID"
             })
         }
-        const response = await MpesaService.stkPushStatusService(CheckoutRequestID);
+        const response = await MpesaService.stkPushStatusService(CheckoutRequestID, req);
 
     } catch (error) {
         if(error){
@@ -91,3 +97,4 @@ module.exports = {
     callBack,
     stkPushStatus
 }
+

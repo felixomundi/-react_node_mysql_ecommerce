@@ -8,8 +8,9 @@ const PASSWORD = new Buffer.from(SHORTCODE + PASSKEY + TIMESTAMP).toString("base
 const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
 const CALLBACK_URL = process.env.MPESA_CALLBACK_URL;
+
 class MpesaService {
-    static async stkPushService(phone, amount){
+    static async stkPushService(phone, amount, req){
         const data =  { 
             "BusinessShortCode": SHORTCODE,
             "Password": PASSWORD,
@@ -26,7 +27,7 @@ class MpesaService {
         const response = await axios.post("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
                 data, {
                 headers: {
-                    authorization: `Bearer ${req.token}`,
+                    Authorization: `Bearer ${req.token}`,
                     "Content-Type": "application/json",            }
             }
             );
@@ -42,7 +43,7 @@ class MpesaService {
                 });    
         return response.data;
     }
-    static async stkPushStatusService(CheckoutRequestID){
+    static async stkPushStatusService(CheckoutRequestID, req){
         const url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query";      
         const response = await axios.post(url,
             {
