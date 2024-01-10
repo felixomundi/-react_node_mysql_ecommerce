@@ -1,6 +1,5 @@
 const express = require("express");
 const cors =require("cors");
-// const cookieParser = require('cookie-parser');
 const dotenv = require("dotenv");
 const path = require("path");
 dotenv.config();
@@ -41,6 +40,17 @@ app.use("/api/v1/orders", require("./src/routes/orderRoute.js"));
 app.use("/api/v1/subscribers", require("./src/routes/subscribeRoute.js"));
 app.use("/api/v1/contact", require("./src/routes/contactRoute.js"));
 app.use("/api/v1/mpesa", require("./src/routes/mpesaRoute.js"));
+app.use("/",(req,res)=>{
+    res.status(200)
+    if (req.accepts('html')) {
+        res.sendFile(path.join(__dirname, './src/views', 'index.html'))
+    } else if (req.accepts('json')) {
+        res.json({ message: 'Nyagaka Ecommerce API' });
+    } else {
+        res.type('txt').send('Nyagaka Ecommerce API');
+    }
+    return
+});
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
@@ -50,7 +60,9 @@ app.all('*', (req, res) => {
     } else {
         res.type('txt').send('404 Not Found');
     }
+    return
 })
+
 
 
 app.listen(

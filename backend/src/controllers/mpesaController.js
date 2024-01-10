@@ -1,14 +1,6 @@
 require("dotenv").config();
-const axios = require("axios");
+const MpesaService = require("../services/MpesaService");
 const ngrok = require("ngrok");
-const getTimestamp = require("../utils/timestamp");
-const TIMESTAMP = getTimestamp();  
-const SHORTCODE = process.env.MPESA_SHORTCODE;
-const PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-const PASSWORD = new Buffer.from(SHORTCODE + PASSKEY + TIMESTAMP).toString("base64");    
-const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
-const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
-const CALLBACK_URL = process.env.MPESA_CALLBACK_URL;
 async function ngrokConnect(){
     try {
         var url = await ngrok.connect({
@@ -23,54 +15,35 @@ async function ngrokConnect(){
 
 } ngrokConnect();
 
-
 const generateToken = async(req, res, next) => {    
    try {       
-    const auth = new Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString("base64");
-    const response = await axios.get("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
-            {
-                headers: {
-                    Authorization: `Basic ${auth}`,
-                }
-            });
-        if (response.data) {
-          req.token = response.data.access_token;         
-        }        
-      next() 
-      return response.data;
+    const response = await MpesaService.generateTokenService();
+    if (response) {
+        req.token = response.access_token;         
+      }        
+    next() 
     } catch (error) {
         return res.status(400).json(error);
     }
 }
 const stkPush = async (req, res) => {   
     try {
-    const phone = req.body.phone.substring(1);
-    // const amount = req.body.amount; 
-    const amount = 1;
-        const data =  { 
-        "BusinessShortCode": SHORTCODE,
-        "Password": PASSWORD,
-        "Timestamp": TIMESTAMP,
-        "TransactionType": "CustomerPayBillOnline",
-        "Amount": amount,
-        "PartyA": `254${phone}`,
-        "PartyB": SHORTCODE,
-        "PhoneNumber": `254${phone}`,
-        "CallBackURL": CALLBACK_URL,
-        "AccountReference": `254${phone}`,
-        "TransactionDesc": "Testing mpesa simulation"
-    }
-    const response = await axios.post("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
-            data, {
-            headers: {
-                authorization: `Bearer ${req.token}`,
-                "Content-Type": "application/json",            }
+        const phone = req.body.phone.substring(1);
+        const amount = req.body.amount;     
+        if(!phone){
+            return res.status(400).json({
+                message:"Provide Mpesa Phone Number"
+            })
         }
-        );
-   
-       console.log(response)
-    //   return res.status(200).json(response.data.ResponseDescription);
-     return  res.status(200).json(response.data)
+        if(!amount){
+            return res.status(400).json({
+                message:"Provide Amount to Pay"
+            })
+        }   
+        const response = await MpesaService.stkPushService(phone, amount);
+        console.log(response)
+        //   return res.status(200).json(response.data.ResponseDescription);
+        return  res.status(200).json(response)
  
    }
        catch(error) {
@@ -103,21 +76,8 @@ const stkPushStatus = async(req, res)=>{
                 message:"Please Provide CheckoutRequestID"
             })
         }
-        const url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query";      
-        const response = await axios.post(url,
-            {
-                "BusinessShortCode":SHORTCODE,
-                "Password":PASSWORD,
-                "Timestamp":TIMESTAMP,
-                'CheckoutRequestID':CheckoutRequestID
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${req.token}`,
-                    "Content-Type": "application/json",            }
-            }        
-            );
-        return response;
+        const response = await MpesaService.stkPushStatusService(CheckoutRequestID);
+
     } catch (error) {
         if(error){
             return error
