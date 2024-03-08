@@ -26,7 +26,6 @@ navigate("/login")
 if (user) {
 dispatch(getCartItems())
     dispatch(cartTotal());
-    dispatch(cartTotal());
 }
 
 },[dispatch,user, navigate])
