@@ -69,16 +69,16 @@ const callBack = async(req, res) => {
             const body = await req?.body?.Body?.stkCallback?.CallbackMetadata;
         
             // Get amount
-            const amountObj = await body.Item.find(obj => obj.Name === 'Amount');
-            const amount = await amountObj.Value;
+            // const amountObj = await body.Item.find(obj => obj.Name === 'Amount');
+            // const amount = await amountObj.Value;
         
             // Get Mpesa code
             const codeObj = await body.Item.find(obj => obj.Name === 'MpesaReceiptNumber');
             const mpesaCode = await codeObj.Value;
         
             // Get phone number
-            const phoneNumberObj = await body.Item.find(obj => obj.Name === 'PhoneNumber');
-            const phone = await phoneNumberObj.Value;
+            // const phoneNumberObj = await body.Item.find(obj => obj.Name === 'PhoneNumber');
+            // const phone = await phoneNumberObj.Value;
 
             await payment.update({
                 "ResultDesc":await callbackData?.Body?.stkCallback?.ResultDesc,

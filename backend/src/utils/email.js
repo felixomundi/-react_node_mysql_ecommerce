@@ -1,13 +1,14 @@
 "use strict";
+require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "mail.nyagaka.com",
+    host: process.env.EMAIL_HOST,
     port: 587,
     // secure: false,
     auth: {    
-      user: "contact@nyagaka.com",
-      pass: "omundi2030",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
     tls: {
         rejectUnauthorized:false,
@@ -18,7 +19,7 @@ async function sendEmails(name,email,subject,message) {
    try {
      await transporter.sendMail({
         from: `${name} ${email}`, 
-        to: "contact@nyagaka.com", 
+        to: process.env.EMAIL_USER, 
         subject: subject,        
         html: message, 
       });       
