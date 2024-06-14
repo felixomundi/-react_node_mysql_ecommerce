@@ -38,6 +38,17 @@ const login = async (userData) => {
   return response.data
 }
 
+// forgot Password
+const forgotPasswordRequest = async (userData) => {
+  const response = await axios.post(API_URL + 'forgot-password', userData); 
+  return response.data
+}
+// reset password
+const resetPasswordRequest = async (data) => {
+  const response = await axios.post(API_URL + 'reset-password/'+data.token, {password:data.password}); 
+  return response.data
+}
+
 //Update user profile
 const profileUpdate = async (userData, token) => {
   const config = {
@@ -124,7 +135,8 @@ const authService = {
   updateUserDetails,
   adduser,
   updatedUserPassword,
-  
+  forgotPasswordRequest,
+  resetPasswordRequest,
 }
 
 export default authService

@@ -1,37 +1,36 @@
 import { useState, useEffect,Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
+import {reset, resetPasswordRequest } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import { Link } from 'react-router-dom'
 import {  Form} from 'react-bootstrap'
 import "../assets/css/auth.css"
-import { validateEmail } from '../features/auth/authService'
-function Login() {
+export default function ResetPassword() {
 
 const [formData, setFormData] = useState({
-email: '',
-password: '',
+password: ''
 })
 
-const { email, password } = formData
+const { password } = formData
 
 const navigate = useNavigate()
     const dispatch = useDispatch();
     const [redirect] = useSearchParams();
     const route = redirect.get("redirect") ?? '/';  
-
+    const {token} = useParams();
     const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
-
     useEffect(() => {
         if (isError) {
             toast.error(message)
         }
-        if (isSuccess || user) {
+        if (user) {
             navigate(route);
         }
-
+        if (isSuccess) {
+            toast.success(message);
+        }
         dispatch(reset())
     }, [user, isError, isSuccess, message, navigate,route,dispatch]);
 
@@ -45,22 +44,16 @@ setFormData((prevState) => ({
 const onSubmit = (e) => {
 e.preventDefault()
 
-if (!email) {
-return toast.error("Please enter your email");
-}
-else if (!password) {
+if (!password) {
 return toast.error("Please enter your password");
 }
 
-if (!validateEmail(email)) {
-return toast.error("Please enter a valid email");
-}
-const userData = {
-email,
-password,
-}
+    const data = {
+        token,
+        password
+    }
 
-dispatch(login(userData))
+dispatch(resetPasswordRequest(data))
 }
 
 if (isLoading) {
@@ -72,25 +65,18 @@ return (
 
 <div className="auth row">
 <div className="col-md-4"></div>      
-<div className="col-md-8">
+            <div className="col-md-8">
+                <h1>Reset Password</h1>
 <Form onSubmit={onSubmit}>
 <div className="colm-form">
 <div className="form-container mt-3">
-<label htmlFor="email">Email</label>
-<input type="email"
-name="email"
-value={email} onChange={onChange}
-placeholder="Enter your email" />
 <label htmlFor="password">Password</label>
-<input   type='password'
-id='password'
-className='form-control'
-name='password'
-value={password}
-placeholder='Enter password'
-onChange={onChange}/>
-<button type="submit" className="btn-login">Login</button>
-<Link to="/forgot-password">Forgotten password?</Link>
+<input type="password"
+name="password"
+value={password} onChange={onChange}
+placeholder="Enter your password" />
+<button type="submit" className="btn-login">Reset Password</button>
+<Link to="/login">Sign In?</Link>
 <Link  to="/register" className="btn-new">Create new Account</Link>
 </div>
 
@@ -103,4 +89,4 @@ onChange={onChange}/>
 )
 }
 
-export default Login
+

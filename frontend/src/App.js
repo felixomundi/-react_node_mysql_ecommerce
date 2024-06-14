@@ -32,6 +32,8 @@ import NotFoundPage from "./pages/NotFoundPage.js";
 import SystemOrders from './admin/orders/SystemOrders'
 import SystemOrderDetail from './admin/orders/SystemOrderDetail'
 import Subscribers from './admin/newsletter/Subscribers'
+import ForgotPassword from './auth/ForgotPassword.js'
+import ResetPassword from './auth/ResetPassword.js'
 // import Subscriptions from './pages/Subscriptions'
 function App() { 
   const dispatch = useDispatch();  
@@ -52,6 +54,8 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path='/reset-password/:token' element={<ResetPassword/>} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/cart' element={<Cart />} />           

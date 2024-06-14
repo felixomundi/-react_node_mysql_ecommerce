@@ -13,7 +13,7 @@ router.post('/login', loginUser);
 router.put("/profile", protect, updateUser);
 router.patch('/change-password', protect, changePassword);
 router.post('/forgot-password',forgotPassword);
-router.post("/resetpassword/:resetToken", resetPassword);
+router.post("/reset-password/:resetToken", resetPassword);
 router.post("/new", addUser)
 router.get("/", getUsers);
 module.exports = router;

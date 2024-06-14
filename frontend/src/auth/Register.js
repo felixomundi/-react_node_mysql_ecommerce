@@ -102,7 +102,7 @@ placeholder="Confirm Password"
 onChange={(e) => setConfirmPassword(e.target.value)}
 />
 <button type="submit" className="btn-login">Register</button>
-<Link to="#">Forgotten password?</Link>
+<Link to="/forgot-password">Forgotten password?</Link>
 <Link to="/login" className="btn-new">login</Link>
 
 

@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const {User,Token} = require('./../../database/models')
-// const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const dotenv = require('dotenv');
@@ -14,17 +13,12 @@ const generateToken = (id) => {
     expiresIn: '2d',
   })
 }
-
 const validateEmail = (email) => {
   return email.match(
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   );
 };
-
-// @desc    Register new user
-// @route   POST /api/users
-// @access  Public
-// Register User
+// register user public
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -73,7 +67,6 @@ const registerUser = async (req, res) => {
     return res.status(400).json("Invalid user data");
   }
 };
-
 // Login User
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -123,8 +116,6 @@ const loginUser = async (req, res) => {
    return res.status(400).json("Invalid email or password");
   }
 };
-
-
 // Update User
 const updateUser = async (req, res) => {
 
@@ -158,7 +149,7 @@ const updateUser = async (req, res) => {
     
   }
 };
-
+// change password public
 const changePassword = async (req, res) => {
   try {
     const { current_password, new_password } = req.body;
@@ -205,10 +196,9 @@ const changePassword = async (req, res) => {
   
  }
 };
-
+// forgot password public
 const forgotPassword = async (req, res) => {  
   try {
-
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ message:'Please provide email address'})
@@ -238,8 +228,7 @@ const forgotPassword = async (req, res) => {
     
 
   // Create Reste Token
-  let resetToken =  crypto.randomBytes(32).toString("hex") + user.id;
- 
+  let resetToken =  crypto.randomBytes(32).toString("hex") + user.id; 
 
   // Hash token before saving to DB
   const hashedToken = crypto
@@ -255,9 +244,8 @@ const forgotPassword = async (req, res) => {
     expiryDate: Date.now() + 30 * (60 * 1000), // 30 mins
   });
 
-
   // Construct Reset Url
-  const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
   // Reset Email
   const message = `
@@ -267,7 +255,7 @@ const forgotPassword = async (req, res) => {
 
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
 
-      <p>Regards...</p>
+      <p>Regards</p>
       <p>${process.env.APP_NAME} Team</p>
     `;
   const subject = "Password Reset Request"; 
@@ -276,15 +264,13 @@ const forgotPassword = async (req, res) => {
     return res.status(200).json({ message: "Check your email address to forget your password" });
   
   } catch (error) {   
-    console.log(error);
     return res.status(400).json({
-      message:"Email not sent, please try again"      
+      message:"Something went wrong, please try again" 
     });
   }
 };
-
-
-const resetPassword = asyncHandler(async (req, res) => {
+// reset password public
+const resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
     if (!password) {
@@ -321,23 +307,23 @@ const resetPassword = asyncHandler(async (req, res) => {
     })
     
   }
-  // Hash the new password before saving
-  user.password = await bcrypt.hash(password, 10); // Assuming you're using bcrypt for password hashing
+  
+    // save user password
+  user.password = password;
   await user.save();
 
   // Delete the token from the database after successful password reset
   await userToken.destroy();
-
   return res.status(200).json({
     message: "Password Reset Successful, Please Login",
   });
   } catch (error) {
     return res.status(400).json({
-     message:"Something went wrong"
+     message:"Something went wrong in resetting password"
    }) 
   }
-});
-
+}
+// get users private
 const getUsers = async (req, res) => {
   const users = await User.findAll()
   if(users){
@@ -346,7 +332,7 @@ const getUsers = async (req, res) => {
     return res.status(404).json("No users found in the database")
   }
 }
-
+// add user private
 const addUser = async (req, res) => {
   const { name, email, password } = req.body;
   // Validation
@@ -389,7 +375,6 @@ const addUser = async (req, res) => {
     return res.status(400).json("Invalid user data");
   }
 }
-
 module.exports = {
   registerUser,
   loginUser,
