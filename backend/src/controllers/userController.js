@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const {User,Token} = require('./../../database/models')
-const asyncHandler = require('express-async-handler');
+// const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const sendEmail = require("../utils/sendEmail");
 const dotenv = require('dotenv');
 const { Op } = require('sequelize');
+const { mail } = require('../utils/email');
 dotenv.config();
 
 // Generate JWT
@@ -258,26 +258,25 @@ const forgotPassword = async (req, res) => {
 
   // Construct Reset Url
   const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
- 
-console.log(resetUrl);
 
   // Reset Email
   const message = `
       <h2>Hello ${user.name}</h2>
       <p>Please use the url below to reset your password</p>  
-      <p>This reset link is valid for only 30minutes.</p>
+      <p>This reset link is valid for only 30 minutes.</p>
 
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
 
       <p>Regards...</p>
-      <p>Pinvent Team</p>
+      <p>${process.env.APP_NAME} Team</p>
     `;
-  const subject = "Password Reset Request";
-  const send_to = user.email;
-  const sent_from = process.env.EMAIL_USER;
-    await sendEmail(subject, message, send_to, sent_from);
-    res.status(200).json({ message: "Check your email address to forget your password" });
+  const subject = "Password Reset Request"; 
+    // await sendEmail(subject, message, send_to, sent_from);
+   await mail(user.email, subject, message);
+    return res.status(200).json({ message: "Check your email address to forget your password" });
+  
   } catch (error) {   
+    console.log(error);
     return res.status(400).json({
       message:"Email not sent, please try again"      
     });
